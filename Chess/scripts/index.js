@@ -1,10 +1,27 @@
-let chessBoard = buildChessBoard(8, 8);
-paintChessBoard(chessBoard);
-console.log(chessBoard);
+let start = document.getElementById('start');
+start.addEventListener('click', startGame);
+
+let chessBoard;
+
 
 let selectedCell = null;
 let selectedCellX;
 let selectedCellY;
+
+function startGame(){
+    let rows = parseInt((document.getElementById('rows')).value);
+    let columns = parseInt((document.getElementById('columns')).value);
+
+    if(rows >= 4 && columns >= 8 && rows % 2 === 0 && columns % 2 === 0){
+        (document.getElementById('contentBoard').children)[0].remove();
+
+        chessBoard = buildChessBoard(rows, columns);
+        paintChessBoard(chessBoard);
+        console.log(chessBoard);
+    }else{
+        alert('ERRO:\n- El numero de filas o columnas son menor a 8\n- Los numeros no son pares');
+    }
+}
 
 function buildChessBoard(rows, columns){
     let board = Array(rows);
@@ -84,20 +101,23 @@ function selectCell(x, y){
     selectedCellX = x;
     selectedCellY = y;
     selectedCell = document.getElementById(`${x}${y}`);
-    selectedCell.style.backgroundColor = 'blue';
+    selectedCell.style.backgroundColor = '#0000ff';
 }
 
 function movePiece(x, y){
-    let item = document.getElementById(`${x}${y}`);
-    item.innerHTML = selectedCell.innerHTML;
-    selectedCell.innerHTML = '';
 
-    chessBoard[x][y] = chessBoard[selectedCellX][selectedCellY];
-    chessBoard[selectedCellX][selectedCellY] = '';
+    if(selectedCell != null){
+        let item = document.getElementById(`${x}${y}`);
+        item.innerHTML = selectedCell.innerHTML;
+        selectedCell.innerHTML = '';
 
-    selectedCell.style.backgroundColor = null;
-    selectedCell.setAttribute('onclick', `movePiece(${selectedCellX}, ${selectedCellY})`);
-    selectedCell = null;
-    item.setAttribute('onclick', `selectCell(${x}, ${y})`);
-    console.log(chessBoard);
+        chessBoard[x][y] = chessBoard[selectedCellX][selectedCellY];
+        chessBoard[selectedCellX][selectedCellY] = '';
+
+        selectedCell.style.backgroundColor = null;
+        selectedCell.setAttribute('onclick', `movePiece(${selectedCellX}, ${selectedCellY})`);
+        selectedCell = null;
+        item.setAttribute('onclick', `selectCell(${x}, ${y})`);
+        console.log(chessBoard);
+    }
 }

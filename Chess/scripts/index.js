@@ -3,14 +3,16 @@ start.addEventListener('click', startGame);
 
 let chessBoard;
 
-
 let selectedCell = null;
 let selectedCellX;
 let selectedCellY;
 
+let turn;
+
 function startGame(){
     let rows = parseInt((document.getElementById('rows')).value);
     let columns = parseInt((document.getElementById('columns')).value);
+    turn = document.form.piece.value;
 
     if(rows >= 4 && columns >= 8 && rows % 2 === 0 && columns % 2 === 0){
         (document.getElementById('contentBoard').children)[0].remove();
@@ -19,7 +21,7 @@ function startGame(){
         paintChessBoard(chessBoard);
         console.log(chessBoard);
     }else{
-        alert('ERRO:\n- El numero de filas o columnas son menor a 8\n- Los numeros no son pares');
+        alert('ERROR:\n- El numero de filas o columnas son menor a 8\n- Los numeros no son pares');
     }
 }
 
@@ -98,10 +100,16 @@ function selectCell(x, y){
     if(selectedCell != null){
         selectedCell.style.backgroundColor = null;
     }
-    selectedCellX = x;
-    selectedCellY = y;
-    selectedCell = document.getElementById(`${x}${y}`);
-    selectedCell.style.backgroundColor = '#0000ff';
+
+    let character = chessBoard[x][y].charAt(chessBoard[x][y].length-2);
+
+    if((turn === 'B' &&  (character.charCodeAt(0) > 64 && character.charCodeAt(0) < 71)) || (turn === 'W' && (character.charCodeAt(0) > 51 && character.charCodeAt(0) < 58))){
+
+        selectedCellX = x;
+        selectedCellY = y;
+        selectedCell = document.getElementById(`${x}${y}`);
+        selectedCell.style.backgroundColor = '#0000ff';
+    }
 }
 
 function movePiece(x, y){
@@ -118,6 +126,8 @@ function movePiece(x, y){
         selectedCell.setAttribute('onclick', `movePiece(${selectedCellX}, ${selectedCellY})`);
         selectedCell = null;
         item.setAttribute('onclick', `selectCell(${x}, ${y})`);
+        
+        turn = turn === 'B' ? 'W' : 'B';
         console.log(chessBoard);
     }
 }

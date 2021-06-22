@@ -16,20 +16,22 @@
             <div id="inputs">
 
                 <!-- <p>Solo se permiten valores mayores o iguales a 8 y deben ser numeros pares</p> -->
-
-                <label for="rows">Ingrese el numero de filas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-                <input type="number" name="rows" id="rows" placeholder="Numero par mayor de 7" min="8"><br><br>
-
-                <label for="columns">Ingrese el numero de columnas&nbsp;</label>
-                <input type="number" name="columns" id="columns" placeholder="Numero par mayor de 7" min="8"><br><br>
-
-                <label for="">¿Cuales fichas empiezan?</label>
-                <input type="radio" name="piece" id="pieceBlanck">
-                <label for="pieceBlanck">Negras</label>
-                <input type="radio" name="piece" id="pieceWhite">
-                <label for="pieceWhite">Blancas</label><br><br>
                 
-                <input type="submit" name="rows" id="start" value="¡Jugar!">
+                <form name="form" action="">
+                    <label for="rows">Ingrese el numero de filas&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <input type="number" name="rows" id="rows" placeholder="Numero par mayor de 7" min="8"><br><br>
+
+                    <label for="columns">Ingrese el numero de columnas&nbsp;</label>
+                    <input type="number" name="columns" id="columns" placeholder="Numero par mayor de 7" min="8"><br><br>
+
+                    <label for="">¿Cuales fichas empiezan?</label>
+                    <input type="radio" name="piece" id="pieceBlanck" value="B">
+                    <label for="pieceBlanck">Negras</label>
+                    <input type="radio" name="piece" id="pieceWhite" value="W" checked="true">
+                    <label for="pieceWhite">Blancas</label><br><br>
+                
+                    <input type="submit" name="rows" id="start" value="¡Jugar!">
+                </form>
             </div>
         </div>
     </section>

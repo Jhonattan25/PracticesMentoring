@@ -9,6 +9,10 @@ let selectedCellY;
 
 let turn;
 
+/* Funcion que inicia el juego, en el cual se valida el numero de filas y columnas.
+Si los datos ingresados son los correctos se llama a la funcion que genera la matriz del tamaño indicado con sus fichas.
+Luego pinta la matriz en el documento HTML.
+En caso de que las filas y las columnas no sean numeros pares mayor de 7, el programa muestra una alerta indicando que se tuvo un error indicnado que pudo ser alguno de esos dos casos. */
 function startGame(){
     let rows = parseInt((document.getElementById('rows')).value);
     let columns = parseInt((document.getElementById('columns')).value);
@@ -25,6 +29,7 @@ function startGame(){
     }
 }
 
+// Funcion que genera la matriz del tamaño indicado con las fichas del ajedrez.
 function buildChessBoard(rows, columns){
     let board = Array(rows);
     let piecesB = ['&#x265C;', '&#x265E;', '&#x265D;', '&#x265B;', '&#x265A;', '&#x265D;', '&#x265E;', '&#x265C;'];
@@ -63,6 +68,7 @@ function buildChessBoard(rows, columns){
     return board;
 }
 
+//Funcion que pinta el table de ajedrez en el documento HTML.
 function paintChessBoard(board){
     let boardHTML = document.getElementById('contentBoard');
     let elementRow;
@@ -96,6 +102,7 @@ function paintChessBoard(board){
     }
 }
 
+// Funcion que selecciona una celda de la tabla del ajedrez, la condicion es que debe tener como elemento una ficha y que sea el turno del color de la ficha
 function selectCell(x, y){
     if(selectedCell != null){
         selectedCell.style.backgroundColor = null;
@@ -112,9 +119,11 @@ function selectCell(x, y){
     }
 }
 
+//Funcion que sirve para mover la pieza seleccionada, se debe verificar que las filas o columnas a mover sean las permitifas segun la ficha seleccionada
 function movePiece(x, y){
 
-    if(selectedCell != null){
+    if(selectedCell != null && checkMovement(x, y)){
+
         let item = document.getElementById(`${x}${y}`);
         item.innerHTML = selectedCell.innerHTML;
         selectedCell.innerHTML = '';
@@ -130,4 +139,94 @@ function movePiece(x, y){
         turn = turn === 'B' ? 'W' : 'B';
         console.log(chessBoard);
     }
+}
+
+function checkMovement(x, y){
+    switch (chessBoard[selectedCellX][selectedCellY]) {
+        case '&#x2659;':
+        case '&#x265F;':
+            return checkMovementPawn(x, y);
+        case '&#x265E;':
+        case '&#x2658;':
+            return checkMovementKnight(x, y);
+        case '&#x2657;':
+        case '&#x265D;':
+            return checkMovementBishop(x, y);
+        case '&#x2656;':
+        case '&#x265C;':
+            return checkMovementRook(x, y);
+        case '&#x265A;':
+        case '&#x2654;':
+            return checkMovementKing(x, y);
+        case '&#x2655;':
+        case '&#x265B;':
+            return checkMovementQueen(x, y);
+        default:
+            return false;
+    }
+}
+
+//Peon
+function checkMovementPawn(x, y){
+    let differenceX = x - selectedCellX;
+    let differenceY = y - selectedCellY;
+
+
+}
+
+// Caballo
+function checkMovementKnight(x, y){
+    let differenceX = x - selectedCellX;
+    let differenceY = y - selectedCellY;
+
+    if((differenceX === 2 || differenceX === -2) && (differenceY === 1 || differenceY === -1))
+        return true;
+
+    if((differenceY === 2 || differenceY === -2) && (differenceX === 1 || differenceX === -1))
+        return true;
+
+    return false;
+}
+
+// Alfil
+function checkMovementBishop(x, y){
+    let differenceX = x - selectedCellX;
+    let differenceY = y - selectedCellY;
+
+    if( differenceX - differenceY === 0 || differenceX + differenceY === 0 )
+        return true;
+
+    return false;
+}
+
+//Torre
+function checkMovementRook(x, y){
+    let differenceX = x - selectedCellX;
+    let differenceY = y - selectedCellY;
+
+    if((differenceX != 0 || differenceY != 0) && (differenceY === 0 || differenceX === 0))
+        return true;
+
+    return false;
+}
+
+//Rey
+function checkMovementKing(x, y){
+    let differenceX = x - selectedCellX;
+    let differenceY = y - selectedCellY;
+
+    console.log(differenceX, differenceY);
+
+    if( differenceX > 1 || differenceX < -1 || differenceY > 1 || differenceY < -1 )
+        return false;
+
+    return true;
+}
+
+//Reina
+function checkMovementQueen(x, y){
+    if(checkMovementBishop(x, y) || checkMovementRook(x, y))
+        return true;
+
+    return false;
 }

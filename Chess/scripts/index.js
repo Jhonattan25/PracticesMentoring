@@ -105,6 +105,7 @@ function paintChessBoard(board){
 // Funcion que selecciona una celda de la tabla del ajedrez, la condicion es que debe tener como elemento una ficha y que sea el turno del color de la ficha
 function selectCell(x, y){
     if(selectedCell != null){
+        selectedCell.setAttribute('class', selectedCell.getAttribute('class').replace(' flicker', ''));
         selectedCell.style.backgroundColor = null;
     }
 
@@ -115,7 +116,8 @@ function selectCell(x, y){
         selectedCellX = x;
         selectedCellY = y;
         selectedCell = document.getElementById(`${x}${y}`);
-        selectedCell.style.backgroundColor = '#0000ff';
+        selectedCell.style.backgroundColor = '#005eff';
+        selectedCell.setAttribute('class', `${selectedCell.getAttribute('class')} flicker`);
     }
 }
 
@@ -131,6 +133,7 @@ function movePiece(x, y){
         chessBoard[x][y] = chessBoard[selectedCellX][selectedCellY];
         chessBoard[selectedCellX][selectedCellY] = '';
 
+        selectedCell.setAttribute('class', selectedCell.getAttribute('class').replace(' flicker', ''));
         selectedCell.style.backgroundColor = null;
         selectedCell.setAttribute('onclick', `movePiece(${selectedCellX}, ${selectedCellY})`);
         selectedCell = null;
@@ -170,8 +173,15 @@ function checkMovement(x, y){
 function checkMovementPawn(x, y){
     let differenceX = x - selectedCellX;
     let differenceY = y - selectedCellY;
-
-
+    if(chessBoard[selectedCellX][selectedCellY] === '&#x265F;'){
+        console.log();
+        if((( selectedCellX === 1 && differenceX === 2 ) || differenceX === 1) && differenceY === 0)
+        return true;
+    }else{
+        if((( selectedCellX === (chessBoard.length - 2) && differenceX === -2 ) || differenceX === -1) && differenceY === 0)
+        return true;
+    }
+    return false;
 }
 
 // Caballo
